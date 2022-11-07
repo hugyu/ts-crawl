@@ -1,6 +1,7 @@
 // 对获取到的html文档进行操作
 import cheerio from "cheerio";
 import fs from "fs";
+import { Analyzer } from "./crawller";
 interface CourseItem {
   title: string;
   count: number;
@@ -17,7 +18,14 @@ interface CourseItem {
 interface JsonContent {
   [propName: number]: CourseItem[];
 }
-export default class DellAnalyzer {
+export default class DellAnalyzer implements Analyzer {
+  private static instance: DellAnalyzer;
+  static getInstance() {
+    if (!DellAnalyzer.getInstance) {
+      DellAnalyzer.instance = new DellAnalyzer();
+    }
+    return DellAnalyzer.instance;
+  }
   private getCourseInfo(html: string) {
     const $ = cheerio.load(html);
     const courseItems = $(".course-item");
@@ -49,4 +57,6 @@ export default class DellAnalyzer {
     const fileContent = this.generateJsonContent(courseResult, filePath);
     return JSON.stringify(fileContent);
   }
+
+  private constructor() {}
 }

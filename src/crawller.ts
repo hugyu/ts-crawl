@@ -4,11 +4,12 @@ import path from 'path';
 import superagent from "superagent";
 import DellAnalyzer from './dellAnalyzer'
 
-
+export interface Analyzer {
+  analyze: (html: string, filePath: string) => string;
+  
+}
 
 class Crawller {
-  private secret = "secretKey";
-  private url = `http://www.dell-lee.com/typescript/demo.html?secret=${this.secret}`;
   private filePath=path.resolve(__dirname,'../data/course.json')
   // 获取原始的html文件
   async getRawHtml() {
@@ -27,9 +28,11 @@ class Crawller {
     const fileContent=this.analyzer.analyze(html,this.filePath)
     this.writeFile(fileContent)
   }
-  constructor(private analyzer:any) {
+  constructor(private url:string,private analyzer:Analyzer) {
     this.initSpiderProgress();
   }
 }
-const analyzer=new DellAnalyzer()
-const crawller = new Crawller(analyzer);
+const secret = "secretKey"
+const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
+const analyzer = DellAnalyzer.getInstance()
+new Crawller(url, analyzer);
