@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node ./src/crawller.ts"
+    "dev": "ts-node ./src/crawller.ts",
+    "build":"tsc -w",
+    "start": "nodemon node ./build/crawller.js"
+  },
+  "nodemonConfig":{
+    "ignore": [
+      "data/*"
+    ]
   },
   "keywords": [],
   "author": "",
