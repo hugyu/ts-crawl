@@ -2,7 +2,7 @@
 import fs from 'fs';
 import path from 'path';
 import superagent from "superagent";
-import DellAnalyzer from './dellAnalyzer'
+import DellAnalyzer from './analyzer'
 
 export interface Analyzer {
   analyze: (html: string, filePath: string) => string;

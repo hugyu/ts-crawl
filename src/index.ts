@@ -1,14 +1,15 @@
-import express,{Request,Response,NextFunction} from 'express'
+import express from 'express'
+import cookieSession from 'cookie-session'
 import router from './router'
 const app = express()
 // 处理post请求
 app.use(express.urlencoded({ extended: false }))
-// 写一个中间件
-app.use((req: Request, res: Response, next: NextFunction) => {
-    req.teacherName = 'sds'
-    next()
-})
-    
+// 使用cookie-session中间件
+app.use(cookieSession({
+    name: "session",
+    keys: ['teacher dell'],
+    maxAge:24*60*60*1000
+}))
 app.use(router)
 app.listen(7001, () => {
     console.log('server is running ');
