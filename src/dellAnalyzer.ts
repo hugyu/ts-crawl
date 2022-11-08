@@ -21,7 +21,7 @@ interface JsonContent {
 export default class DellAnalyzer implements Analyzer {
   private static instance: DellAnalyzer;
   static getInstance() {
-    if (!DellAnalyzer.getInstance) {
+    if (!DellAnalyzer.instance) {
       DellAnalyzer.instance = new DellAnalyzer();
     }
     return DellAnalyzer.instance;
@@ -40,8 +40,7 @@ export default class DellAnalyzer implements Analyzer {
     const result = {
       time: new Date().getTime(),
       data: courseInfos,
-    };
-    console.log(result);
+    }; 
     return result;
   }
   private generateJsonContent(courseResult: CourseResult, filePath: string) {
@@ -50,8 +49,8 @@ export default class DellAnalyzer implements Analyzer {
       fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"));
     }
     fileContent[courseResult.time] = courseResult.data;
-    return fileContent;
-  }
+    return fileContent; 
+  }  
   public analyze(html: string, filePath: string) {
     const courseResult = this.getCourseInfo(html);
     const fileContent = this.generateJsonContent(courseResult, filePath);
@@ -60,3 +59,4 @@ export default class DellAnalyzer implements Analyzer {
 
   private constructor() {}
 }
+  

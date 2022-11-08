@@ -6,10 +6,9 @@ import DellAnalyzer from './dellAnalyzer'
 
 export interface Analyzer {
   analyze: (html: string, filePath: string) => string;
-  
 }
 
-class Crawller {
+export default class Crawller {
   private filePath=path.resolve(__dirname,'../data/course.json')
   // 获取原始的html文件
   private async getRawHtml() {
@@ -24,15 +23,16 @@ class Crawller {
   }
 
   private async initSpiderProgress() {
-    const html = await this.getRawHtml()
-    const fileContent=this.analyzer.analyze(html,this.filePath)
-    this.writeFile(fileContent)
+    const html = await this.getRawHtml() 
+    const fileContent = this.analyzer.analyze(html, this.filePath)
+    this.writeFile(JSON.parse(fileContent))
   }
   constructor(private url:string,private analyzer:Analyzer) {
     this.initSpiderProgress();
-  }
+  } 
 }
 const secret = "secretKey"
 const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
 const analyzer = DellAnalyzer.getInstance()
+
 new Crawller(url, analyzer);
