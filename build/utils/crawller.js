@@ -21,7 +21,7 @@ class Crawller {
     constructor(url, analyzer) {
         this.url = url;
         this.analyzer = analyzer;
-        this.filePath = path_1.default.resolve(__dirname, '../data/course.json');
+        this.filePath = path_1.default.resolve(__dirname, '../../data/course.json');
         this.initSpiderProgress();
     }
     // 获取原始的html文件

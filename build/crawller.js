@@ -16,7 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const superagent_1 = __importDefault(require("superagent"));
-const dellAnalyzer_1 = __importDefault(require("./dellAnalyzer"));
+const analyzer_1 = __importDefault(require("./utils/analyzer"));
 class Crawller {
     constructor(url, analyzer) {
         this.url = url;
@@ -47,5 +47,5 @@ class Crawller {
 exports.default = Crawller;
 const secret = "secretKey";
 const url = `http://www.dell-lee.com/typescript/demo.html?secret=${secret}`;
-const analyzer = dellAnalyzer_1.default.getInstance();
+const analyzer = analyzer_1.default.getInstance();
 new Crawller(url, analyzer);

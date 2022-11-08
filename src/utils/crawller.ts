@@ -9,7 +9,7 @@ export interface Analyzer {
 }
 
 export default class Crawller {
-  private filePath=path.resolve(__dirname,'../data/course.json')
+  private filePath=path.resolve(__dirname,'../../data/course.json')
   // 获取原始的html文件
   private async getRawHtml() {
     // 发送get请求
