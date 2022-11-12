@@ -16,16 +16,16 @@ export function controller(root: string) {
       // 获取对应的方法
       const handler = target.prototype[key];
       // 获取中间件
-      const middleware: RequestHandler = Reflect.getMetadata(
-        "middleware",
+      const middlewares: RequestHandler[] = Reflect.getMetadata(
+        "middlewares",
         target.prototype,
         key
       );
 
       if (path && method) {
         const fullPath = root === "/" ? `${path}` : `${root}${path}`;
-        if (middleware) {
-          router[method](fullPath, middleware, handler);
+        if (middlewares && middlewares.length) {
+          router[method](fullPath, ...middlewares, handler);
         } else {
           router[method](fullPath, handler);
         }
