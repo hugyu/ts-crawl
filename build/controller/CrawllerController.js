@@ -16,12 +16,12 @@ exports.CrawllerController = void 0;
 require("reflect-metadata");
 var crawller_1 = __importDefault(require("../utils/crawller"));
 var util_1 = require("../utils/util");
-var decorator_1 = require("./decorator");
 var analyzer_1 = __importDefault(require("../utils/analyzer"));
 var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
+var index_1 = require("../decorator/index");
 var checkLogin = function (req, res, next) {
-    var isLogin = req.session ? req.session.login : false;
+    var isLogin = !!(req.session ? req.session.login : false);
     if (isLogin) {
         next();
     }
@@ -50,21 +50,21 @@ var CrawllerController = /** @class */ (function () {
         }
     };
     __decorate([
-        (0, decorator_1.get)("/getData"),
-        (0, decorator_1.use)(checkLogin),
+        (0, index_1.get)("/getData"),
+        (0, index_1.use)(checkLogin),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], CrawllerController.prototype, "getData", null);
     __decorate([
-        (0, decorator_1.get)("/showData"),
-        (0, decorator_1.use)(checkLogin),
+        (0, index_1.get)("/showData"),
+        (0, index_1.use)(checkLogin),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], CrawllerController.prototype, "showData", null);
     CrawllerController = __decorate([
-        decorator_1.controller
+        (0, index_1.controller)('/')
     ], CrawllerController);
     return CrawllerController;
 }());

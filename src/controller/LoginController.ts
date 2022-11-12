@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import "reflect-metadata";
+import { controller, get, post } from "../decorator/index";
 import { getResponseData } from "../utils/util";
-import { get, controller,post } from "./decorator";
 // 继承的接口 body属性上有key value值
 interface RequestWithBody extends Request {
   body: {
@@ -9,36 +9,39 @@ interface RequestWithBody extends Request {
   };
 }
 
-@controller
+@controller('/')
 export class LoginController {
-  @post("/login") 
-  login(req: RequestWithBody, res: Response) {
-      const { password } = req.body;
-  const isLogin = req.session ? req.session.login : false;
-  if (isLogin) {
-    res.json(getResponseData(false, "已经登录"));
-  } else {
-    if (password === "123") {
-      if (req.session) {
-        req.session.login = true;
-        res.json(getResponseData(true));
-      }
-    } else {
-      res.json(getResponseData(false, "登录失败"));
-    }
+  static islogin(req: RequestWithBody):boolean {
+    return !!(req.session ? req.session.login : false)
   }
+  @post("/login")
+  login(req: RequestWithBody, res: Response):void {
+    const { password } = req.body;
+    const isLogin = LoginController.islogin(req);
+    if (isLogin) {
+      res.json(getResponseData(false, "已经登录"));
+    } else {
+      if (password === "123") {
+        if (req.session) {
+          req.session.login = true;
+          res.json(getResponseData(true));
+        }
+      } else {
+        res.json(getResponseData(false, "登录失败"));
+      }
+    }
   }
 
   @get("/logout")
-  logout(req: RequestWithBody, res: Response) {
+  logout(req: RequestWithBody, res: Response):void {
     if (req.session) {
       req.session.login = undefined;
     }
     res.json(getResponseData(true));
   }
   @get("/")
-  home(req: RequestWithBody, res: Response) {
-    const isLogin = req.session ? req.session.login : false;
+  home(req: RequestWithBody, res: Response):void {
+    const isLogin = LoginController.islogin(req);
     if (isLogin) {
       res.send(` <html>
         <body>

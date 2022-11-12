@@ -1,6 +1,6 @@
 import express from 'express'
 import cookieSession from 'cookie-session'
-import {router} from './controller/decorator'
+import router from './router'
 import './controller/LoginController'
 import './controller/CrawllerController'
 
