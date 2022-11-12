@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.controller = exports.put = exports.del = exports.post = exports.get = exports.router = void 0;
+exports.controller = exports.use = exports.put = exports.del = exports.post = exports.get = exports.router = void 0;
 var express_1 = require("express");
 exports.router = (0, express_1.Router)();
 var Method;
@@ -20,6 +20,12 @@ exports.get = getRequestDecorator('get');
 exports.post = getRequestDecorator('post');
 exports.del = getRequestDecorator('delete');
 exports.put = getRequestDecorator('put');
+function use(middleware) {
+    return function (target, key) {
+        Reflect.defineMetadata("middleware", middleware, target, key);
+    };
+}
+exports.use = use;
 function controller(target) {
     for (var key in target.prototype) {
         // 获取对应的path
@@ -28,8 +34,15 @@ function controller(target) {
         var method = Reflect.getMetadata("method", target.prototype, key);
         // 获取对应的方法
         var handler = target.prototype[key];
+        // 获取中间件
+        var middleware = Reflect.getMetadata("middleware", target.prototype, key);
         if (path && handler && method) {
-            exports.router[method](path, handler);
+            if (middleware) {
+                exports.router[method](path, middleware, handler);
+            }
+            else {
+                exports.router[method](path, handler);
+            }
         }
     }
 }

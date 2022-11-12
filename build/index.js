@@ -7,6 +7,7 @@ var express_1 = __importDefault(require("express"));
 var cookie_session_1 = __importDefault(require("cookie-session"));
 var decorator_1 = require("./controller/decorator");
 require("./controller/LoginController");
+require("./controller/CrawllerController");
 var app = (0, express_1.default)();
 // 处理post请求
 app.use(express_1.default.urlencoded({ extended: false }));

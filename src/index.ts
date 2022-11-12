@@ -2,6 +2,8 @@ import express from 'express'
 import cookieSession from 'cookie-session'
 import {router} from './controller/decorator'
 import './controller/LoginController'
+import './controller/CrawllerController'
+
 const app = express()
 // 处理post请求
 app.use(express.urlencoded({ extended: false }))
