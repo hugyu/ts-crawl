@@ -11,12 +11,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginController = void 0;
 require("reflect-metadata");
+var util_1 = require("../utils/util");
 var decorator_1 = require("./decorator");
 var LoginController = /** @class */ (function () {
     function LoginController() {
     }
     LoginController.prototype.login = function (req, res) {
-        res.send("login");
+        var password = req.body.password;
+        var isLogin = req.session ? req.session.login : false;
+        if (isLogin) {
+            res.json((0, util_1.getResponseData)(false, "已经登录"));
+        }
+        else {
+            if (password === "123") {
+                if (req.session) {
+                    req.session.login = true;
+                    res.json((0, util_1.getResponseData)(true));
+                }
+            }
+            else {
+                res.json((0, util_1.getResponseData)(false, "登录失败"));
+            }
+        }
+    };
+    LoginController.prototype.logout = function (req, res) {
+        if (req.session) {
+            req.session.login = undefined;
+        }
+        res.json((0, util_1.getResponseData)(true));
     };
     LoginController.prototype.home = function (req, res) {
         var isLogin = req.session ? req.session.login : false;
@@ -28,11 +50,17 @@ var LoginController = /** @class */ (function () {
         }
     };
     __decorate([
-        (0, decorator_1.get)("/login"),
+        (0, decorator_1.post)("/login"),
         __metadata("design:type", Function),
         __metadata("design:paramtypes", [Object, Object]),
         __metadata("design:returntype", void 0)
     ], LoginController.prototype, "login", null);
+    __decorate([
+        (0, decorator_1.get)("/logout"),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object, Object]),
+        __metadata("design:returntype", void 0)
+    ], LoginController.prototype, "logout", null);
     __decorate([
         (0, decorator_1.get)("/"),
         __metadata("design:type", Function),
