@@ -9,57 +9,40 @@ interface RequestWithBody extends Request {
   };
 }
 
-@controller('/')
+@controller("/api")
 export class LoginController {
-  static islogin(req: RequestWithBody):boolean {
-    return !!(req.session ? req.session.login : false)
+  static islogin(req: RequestWithBody): boolean {
+    return !!(req.session ? req.session.login : false);
+  }
+  @get("/isLogin")
+  isLogin(req: RequestWithBody, res: Response): void {
+    const isLogin = LoginController.islogin(req);
+    const result=getResponseData<boolean>(isLogin)
+    res.json(result);
   }
   @post("/login")
-  login(req: RequestWithBody, res: Response):void {
+  login(req: RequestWithBody, res: Response): void {
     const { password } = req.body;
     const isLogin = LoginController.islogin(req);
     if (isLogin) {
-      res.json(getResponseData(false, "已经登录"));
+      res.json(getResponseData<boolean>(true));
     } else {
       if (password === "123") {
         if (req.session) {
           req.session.login = true;
-          res.json(getResponseData(true));
+          res.json(getResponseData<boolean>(true));
         }
       } else {
-        res.json(getResponseData(false, "登录失败"));
+        res.json(getResponseData<boolean>(false, "登录失败"));
       }
     }
   }
 
   @get("/logout")
-  logout(req: RequestWithBody, res: Response):void {
+  logout(req: RequestWithBody, res: Response): void {
     if (req.session) {
       req.session.login = undefined;
     }
-    res.json(getResponseData(true));
-  }
-  @get("/")
-  home(req: RequestWithBody, res: Response):void {
-    const isLogin = LoginController.islogin(req);
-    if (isLogin) {
-      res.send(` <html>
-        <body>
-        <a href='/getData'>爬取内容</a>
-        <a href='/showData'>展示内容</a>
-       <a href='/logout'>退出</a>
-        </body>
-        </html>`);
-    } else {
-      res.send(`
-    <html>
-    <body>
-    <form method="post" action="/login">
-    <input type="password" name="password"/>
-    <button>登录</button>
-    </form>
-    </body>
-    </html>`);
-    }
+    res.json(getResponseData<boolean>(true));
   }
 }

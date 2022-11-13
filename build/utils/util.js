@@ -6,13 +6,13 @@ var getResponseData = function (data, errMsg) {
         return {
             success: false,
             errMsg: errMsg,
-            data: data
+            data: data,
         };
     }
     return {
         success: true,
-        errMsg: '',
-        data: data
+        errMsg: "",
+        data: data,
     };
 };
 exports.getResponseData = getResponseData;

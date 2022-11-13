@@ -4,7 +4,7 @@ import { Methods } from "./request";
 
 export function controller(root: string) {
   return function (target: new (...args: any[]) => any) {
-    for (let key in target.prototype) {
+      for (let key in target.prototype) {
       // 获取对应的path
       const path: string = Reflect.getMetadata("path", target.prototype, key);
       // 获取对应的请求方式
