@@ -17,7 +17,7 @@ export class LoginController {
   @get("/isLogin")
   isLogin(req: RequestWithBody, res: Response): void {
     const isLogin = LoginController.islogin(req);
-    const result=getResponseData<boolean>(isLogin)
+    const result=getResponseData<responseResult.isLogin>(isLogin)
     res.json(result);
   }
   @post("/login")
@@ -30,10 +30,10 @@ export class LoginController {
       if (password === "123") {
         if (req.session) {
           req.session.login = true;
-          res.json(getResponseData<boolean>(true));
+          res.json(getResponseData<responseResult.login>(true));
         }
       } else {
-        res.json(getResponseData<boolean>(false, "登录失败"));
+        res.json(getResponseData<responseResult.login>(false, "登录失败"));
       }
     }
   }
@@ -43,6 +43,6 @@ export class LoginController {
     if (req.session) {
       req.session.login = undefined;
     }
-    res.json(getResponseData<boolean>(true));
+    res.json(getResponseData<responseResult.logout>(true));
   }
 }
